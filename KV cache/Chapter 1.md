@@ -14,9 +14,9 @@
 
 在一个标准的 decoder 层中（假设只有自注意力，不含 cross-attention）：
 
-[
- \text{Attention}(Q,K,V) = \text{Softmax}\left(\frac{QK^T}{\sqrt{d_k}} + \text{mask}\right)V
- ]
+$$
+\text{Attention}(Q,K,V) = \text{Softmax}\left(\frac{QK^T}{\sqrt{d_k}} + \text{mask}\right)V
+$$
 
 - Q, K, V ∈ ℝ^(seq_len × d_head)
 - 每一层、每一个 head 都要计算一次。
@@ -42,10 +42,9 @@
 | …     | …          | …             | …      |
 
 总计算量是：
- [
- O(1^2 + 2^2 + 3^2 + … + n^2) = O(n^3)
- ]
-
+$$
+O(1^2 + 2^2 + 3^2 + … + n^2) = O(n^3)
+$$
 💥 **推理阶段的巨大浪费就在这里**：
  每次生成新 token，都要重复计算历史 token 的 K/V，
  而这些历史 token 其实早就算过、不会变了。
@@ -56,9 +55,11 @@
 
 Key 和 Value 是由输入 token 经过线性层得到的：
 
-[
- K = XW_K,\quad V = XW_V
- ]
+$$
+K = XW_K,\quad V = XW_V
+$$
+
+ 
 
 在生成时，**历史输入 X 其实不会变**，
  所以它们对应的 K/V 也不会变。
